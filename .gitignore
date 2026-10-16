@@ -1,0 +1,20 @@
+# Local .terraform directories
+**/.terraform/*
+.terraform/
+
+# .tfstate files (must never be committed)
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Ignore any variables files containing actual values
+*.tfvars
+!terraform.tfvars.example
+!dev.tfvars
+!prod.tfvars
+
+# Mac/OSX system files
+.DS_Store
