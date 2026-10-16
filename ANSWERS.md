@@ -13,3 +13,10 @@ A: App servers live in private subnets so they cannot be accessed directly from 
 
 **Q: What is the trade-off between a single NAT Gateway and one per AZ?**
 A: A single NAT Gateway is cheaper, which is ideal for a `dev` environment, but it creates a single point of failure (if that AZ goes down, the other AZ loses outbound internet access). Deploying one NAT Gateway per AZ (for `prod`) provides High Availability and fault tolerance, ensuring servers can always reach the internet, but doubles the hourly and data-processing costs.
+
+## Milestone 03
+**Q: Why is referencing a security group ID safer than allowing a CIDR range?**
+A: Referencing a security group ID dynamically trusts any resource attached to that group, regardless of its IP address. In an Auto Scaling environment, IP addresses change constantly as instances are created or destroyed. Using a CIDR block would require trusting entire subnets, which violates least privilege, whereas SG referencing explicitly strictly links the tiers (e.g., only traffic originating from the ALB is allowed to hit the App layer).
+
+**Q: If the ALB is compromised, what can an attacker reach directly? Explain using your rules.**
+A: If the ALB is compromised, an attacker can only reach the App servers on port 80, as defined by the `app_http_from_alb` ingress rule. They cannot reach the database directly because the Database SG strictly allows traffic only from the App SG, isolating the data tier from the public-facing load balancer.

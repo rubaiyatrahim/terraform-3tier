@@ -83,7 +83,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
   route {
-    cidr_block     = "0.0.0.0/0"
+    cidr_block = "0.0.0.0/0"
     # If single_nat_gateway is true, all private subnets route to the 0th NAT.
     # Otherwise, each private subnet routes to the NAT in its own AZ.
     nat_gateway_id = aws_nat_gateway.nat[var.single_nat_gateway ? 0 : count.index].id
@@ -101,7 +101,7 @@ resource "aws_route_table_association" "private" {
 resource "aws_route_table" "database" {
   vpc_id = aws_vpc.main.id
   # No default route to IGW or NAT (strictly internal)
-  tags   = { Name = "novacart-${var.environment}-database-rt" }
+  tags = { Name = "novacart-${var.environment}-database-rt" }
 }
 
 resource "aws_route_table_association" "database" {

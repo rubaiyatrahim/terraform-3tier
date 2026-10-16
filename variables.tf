@@ -7,7 +7,7 @@ variable "project_name" {
 variable "environment" {
   type        = string
   description = "Deployment environment (dev or prod)"
-  
+
   validation {
     condition     = contains(["dev", "prod"], var.environment)
     error_message = "The environment must be strictly 'dev' or 'prod'."
@@ -23,4 +23,9 @@ variable "aws_region" {
 variable "vpc_cidr" {
   type        = string
   description = "CIDR block for the entire VPC"
+}
+
+variable "allowed_ssh_cidr" {
+  type        = string
+  description = "CIDR block allowed to SSH into the bastion host"
 }
