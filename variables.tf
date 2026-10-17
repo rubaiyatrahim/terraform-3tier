@@ -29,3 +29,7 @@ variable "allowed_ssh_cidr" {
   type        = string
   description = "CIDR block allowed to SSH into the bastion host"
 }
+variable "asg_min_size" { default = 1 }
+variable "asg_max_size" { default = 2 }
+variable "asg_desired_capacity" { default = 1 }
+variable "instance_type" { default = "t3.micro" }

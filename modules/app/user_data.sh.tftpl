@@ -1,0 +1,27 @@
+#!/bin/bash
+# Install Nginx
+yum update -y
+yum install -y nginx
+
+# Gather instance metadata (IMDSv2)
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/latest/meta-data/instance-id)
+AZ=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+
+# Create a custom index.html
+cat <<EOF > /usr/share/nginx/html/index.html
+<!DOCTYPE html>
+<html>
+<head><title>NovaCart ${environment}</title></head>
+<body>
+  <h1>NovaCart is Online!</h1>
+  <p><strong>Environment:</strong> ${environment}</p>
+  <p><strong>Instance ID:</strong> $INSTANCE_ID</p>
+  <p><strong>Availability Zone:</strong> $AZ</p>
+</body>
+</html>
+EOF
+
+# Start and enable Nginx
+systemctl start nginx
+systemctl enable nginx

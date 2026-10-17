@@ -20,3 +20,10 @@ A: Referencing a security group ID dynamically trusts any resource attached to t
 
 **Q: If the ALB is compromised, what can an attacker reach directly? Explain using your rules.**
 A: If the ALB is compromised, an attacker can only reach the App servers on port 80, as defined by the `app_http_from_alb` ingress rule. They cannot reach the database directly because the Database SG strictly allows traffic only from the App SG, isolating the data tier from the public-facing load balancer.
+
+## Milestone 04
+**Q: What attack does IMDSv2 protect against?**
+A: IMDSv2 protects against Server-Side Request Forgery (SSRF) vulnerabilities. By requiring a session token (via a `PUT` request) before metadata can be fetched, an attacker who finds an SSRF flaw in the web application cannot simply trick the server into blindly requesting and returning its own IAM credentials from `169.254.169.254`.
+
+**Q: What happens to running instances when you change the user data and apply with instance refresh enabled?**
+A: The Launch Template gets updated to a new version containing the new user data. Because `instance_refresh` is configured in the ASG, Terraform triggers a rolling update. The ASG launches new instances using the new Launch Template version, waits for them to pass the ALB health checks, and then safely terminates the old instances in batches (respecting the `min_healthy_percentage`) without causing downtime.
