@@ -34,3 +34,10 @@ A: Passing a password as a Terraform variable usually leaves it exposed in plain
 
 **Q: What does Multi-AZ protect against, and what does it NOT protect against?**<br />
 A: Multi-AZ protects against infrastructure failures (like an entire Availability Zone going down, hardware failure, or network disruption on the primary database instance) by automatically failing over to a synchronous standby replica. It does NOT protect against logical errors, such as a developer accidentally running `DROP TABLE` or corrupting the data, because those changes are immediately replicated to the standby database.
+
+## Milestone 06
+**Q: Why use `.tfvars` files instead of hardcoding variables in `main.tf`?**<br />
+A: It allows us to use the exact same underlying Terraform code for multiple environments (dev, staging, prod) simply by passing a different variable file. This ensures consistency across environments, reduces code duplication, and prevents configuration drift.
+
+**Q: Why is `terraform destroy` a critical step in cloud engineering?**<br />
+A: The cloud operates on a pay-as-you-go model. Leaving unused infrastructure running (like NAT Gateways, Load Balancers, and RDS instances) accrues unnecessary hourly charges. In ephemeral environments like dev or staging, tearing down infrastructure when it is not in use is a primary cost-optimization strategy.
