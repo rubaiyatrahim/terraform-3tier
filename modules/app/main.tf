@@ -107,3 +107,8 @@ resource "aws_autoscaling_policy" "cpu_tracking" {
     target_value = 50.0
   }
 }
+
+resource "aws_iam_role_policy_attachment" "secrets_policy" {
+  role       = aws_iam_role.ssm_role.name
+  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+}
